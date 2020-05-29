@@ -8,7 +8,8 @@ import { getWin } from '../boardFunctions';
 import { alertWinner } from '../boardFunctions';
 import ColumnIndicator from './ColumnIndicator';
 import RotateDropAnimation from './RotateDropAnimation';
-import LoadingScreen from './LoadingScreen'
+import LoadingScreen from './LoadingScreen';
+import Tutorial from './Tutorial';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
@@ -38,9 +39,17 @@ export default function PassPlay({ route, navigation }) {
     const [boardZ, setBoardZ] = useState(-1)
     const [oneGoesFirst, setOneGoesFirst] = useState(true)
     const [resetting, setResetting] = useState(true)
+    const [showTutorial, setShowTutorial] = useState(false)
+    const [tutorialIndex, setTutorialIndex] = useState(0)
 
     const { oneFirst } = route.params
     const { colorScheme } = route.params
+    const { tutorial } = route.params
+
+    /* Show the tutorial if the user came from pressing the tutorial button */
+    useEffect(() => {
+        setShowTutorial(tutorial)
+    }, [tutorial])
 
     /* Set which player goes first from the route.params. */
     useEffect(() => {
@@ -314,6 +323,11 @@ export default function PassPlay({ route, navigation }) {
                     </View>
                 </View> : null
             }
+            {showTutorial ?
+                <View style={styles.tutorialView}>
+                    <Tutorial index={tutorialIndex} setShowTutorial={setShowTutorial} setIndex={setTutorialIndex}/>
+                </View> : null
+            }
             <View style={styles.header}>
                 <TouchableOpacity style={styles.reset} onPress={() => resetGame()}>
                     <Text style={{ color: "white", fontSize: 20, fontFamily: 'sans-serif-light', padding: 5 }}>Reset Game</Text>
@@ -427,5 +441,11 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center"
+    },
+    tutorialView: {
+        zIndex: 2,
+        width: "100%",
+        height: "100%",
+        position: "absolute"
     }
 });
