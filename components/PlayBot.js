@@ -8,7 +8,8 @@ import { getWin } from '../boardFunctions';
 import { alertWinner } from '../boardFunctions';
 import ColumnIndicator from './ColumnIndicator';
 import RotateDropAnimation from './RotateDropAnimation';
-import LoadingScreen from './LoadingScreen'
+import LoadingScreen from './LoadingScreen';
+import Tutorial from './Tutorial';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
@@ -40,9 +41,18 @@ export default function PlayBot({ route, navigation }) {
     const [boardZ, setBoardZ] = useState(-1)
     const [botMovePartTwo, setBotMovePartTwo] = useState(false)
     const [resetting, setResetting] = useState(true)
+    const [showTutorial, setShowTutorial] = useState(false)
+    const [tutorialIndex, setTutorialIndex] = useState(0)
+    const [tutorialZIndex, setTutorialZIndex] = useState(2)
 
     const { oneFirst } = route.params
     const { colorScheme } = route.params
+    const { tutorial } = route.params
+
+    /* Show the tutorial if the user came from pressing the tutorial button */
+    useEffect(() => {
+        setShowTutorial(tutorial)
+    }, [tutorial])
 
     /* Set which player goes first from the route.params. */
     useEffect(() => {
@@ -162,6 +172,17 @@ export default function PlayBot({ route, navigation }) {
     chips according to the new direction of gravity.
     */
     function rotate(angle) {
+        if(turn && dropped && showTutorial) {
+            setTimeout(() => {
+                setTutorialIndex(tutorialIndex + 1)
+                setTutorialZIndex(2) 
+            }, 7500)
+        } else if (turn && showTutorial) {
+            setTimeout(() => {
+                setTutorialIndex(tutorialIndex + 1)
+                setTutorialZIndex(2)
+            }, 1000)
+        }
         Animated.timing(
             boardRotation, {
             toValue: boardRotation._value + angle,
@@ -400,6 +421,14 @@ export default function PlayBot({ route, navigation }) {
                 let newY = parseFloat(JSON.stringify(positionValueOne.getLayout().top))
                 let colHeight = getHeight(board, col[1])
                 if (colHeight < 6 + (board[1] % 2) && newY < screenHeight * 0.25 && !blocked) {
+                    if(showTutorial) {
+                        setTutorialIndex(tutorialIndex + 1)
+                        if(showTutorial && rotated) {
+                            setTimeout(() => setTutorialZIndex(2), 7500)
+                        } else {
+                            setTimeout(() => setTutorialZIndex(2), 1000)
+                        }
+                    }
                     setBlocked(true)
                     setBoardZ(1)
                     positionValueOne.setValue({ x: newX, y: newY })
@@ -431,6 +460,9 @@ export default function PlayBot({ route, navigation }) {
                         })
                     }
                 } else {
+                    if(showTutorial) {
+                        setTutorialZIndex(2)
+                    }
                     Animated.timing(
                         positionValueOne, {
                         toValue: { x: screenWidth / 5 - chipWidth / 2, y: screenHeight * 0.9 - chipWidth / 2 },
@@ -453,6 +485,12 @@ export default function PlayBot({ route, navigation }) {
                     </View>
                 </View> : null
             }
+            {showTutorial ?
+                <View style={{...styles.tutorialView, zIndex: tutorialZIndex}}>
+                    <Tutorial index={tutorialIndex} setShowTutorial={setShowTutorial} setIndex={setTutorialIndex} setZ={setTutorialZIndex}/>
+                </View> : null
+            }
+            <View style={{zIndex: -4, position: "absolute", width: "100%", height: "100%", backgroundColor: "#fff"}}/>
             <View style={styles.header}>
                 <TouchableOpacity style={styles.reset} onPress={() => resetGame()}>
                     <Text style={{ color: "white", fontSize: 20, fontFamily: 'sans-serif-light', padding: 5 }}>Reset Game</Text>
@@ -565,5 +603,10 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center"
+    },
+    tutorialView: {
+        width: "100%",
+        height: "100%",
+        position: "absolute"
     }
 });
