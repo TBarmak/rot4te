@@ -172,10 +172,10 @@ export default function PlayBot({ route, navigation }) {
     chips according to the new direction of gravity.
     */
     function rotate(angle) {
-        if(turn && dropped && showTutorial) {
+        if (turn && dropped && showTutorial) {
             setTimeout(() => {
                 setTutorialIndex(tutorialIndex + 1)
-                setTutorialZIndex(2) 
+                setTutorialZIndex(2)
             }, 7500)
         } else if (turn && showTutorial) {
             setTimeout(() => {
@@ -421,9 +421,9 @@ export default function PlayBot({ route, navigation }) {
                 let newY = parseFloat(JSON.stringify(positionValueOne.getLayout().top))
                 let colHeight = getHeight(board, col[1])
                 if (colHeight < 6 + (board[1] % 2) && newY < screenHeight * 0.25 && !blocked) {
-                    if(showTutorial) {
+                    if (showTutorial) {
                         setTutorialIndex(tutorialIndex + 1)
-                        if(showTutorial && rotated) {
+                        if (showTutorial && rotated) {
                             setTimeout(() => setTutorialZIndex(2), 7500)
                         } else {
                             setTimeout(() => setTutorialZIndex(2), 1000)
@@ -460,7 +460,7 @@ export default function PlayBot({ route, navigation }) {
                         })
                     }
                 } else {
-                    if(showTutorial) {
+                    if (showTutorial) {
                         setTutorialZIndex(2)
                     }
                     Animated.timing(
@@ -486,26 +486,28 @@ export default function PlayBot({ route, navigation }) {
                 </View> : null
             }
             {showTutorial ?
-                <View style={{...styles.tutorialView, zIndex: tutorialZIndex}}>
-                    <Tutorial index={tutorialIndex} setShowTutorial={setShowTutorial} setIndex={setTutorialIndex} setZ={setTutorialZIndex}/>
+                <View style={{ ...styles.tutorialView, zIndex: tutorialZIndex }}>
+                    <Tutorial index={tutorialIndex} setShowTutorial={setShowTutorial} setIndex={setTutorialIndex} setZ={setTutorialZIndex} />
                 </View> : null
             }
-            <View style={{zIndex: -4, position: "absolute", width: "100%", height: "100%", backgroundColor: "#fff"}}/>
-            <View style={styles.header}>
-                <TouchableOpacity style={styles.reset} onPress={() => resetGame()}>
-                    <Text style={{ color: "white", fontSize: 20, fontFamily: 'sans-serif-light', padding: 5 }}>Reset Game</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => {
-                    navigation.navigate("Settings", { cameFrom: "Play Bot", prevOneFirst: oneGoesFirst, colors: colors })
-                }}>
-                    <Icon
-                        name="settings"
-                        size={30}
-                        color="#1e90ff"
-                        style={{ margin: 20 }}
-                    />
-                </TouchableOpacity>
-            </View>
+            <View style={{ zIndex: -4, position: "absolute", width: "100%", height: "100%", backgroundColor: "#fff" }} />
+            {!showTutorial ?
+                <View style={styles.header}>
+                    <TouchableOpacity style={styles.reset} onPress={() => resetGame()}>
+                        <Text style={{ color: "white", fontSize: 20, fontFamily: 'sans-serif-light', padding: 5 }}>Reset Game</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => {
+                        navigation.navigate("Settings", { cameFrom: "Play Bot", prevOneFirst: oneGoesFirst, colors: colors })
+                    }}>
+                        <Icon
+                            name="settings"
+                            size={30}
+                            color="#1e90ff"
+                            style={{ margin: 20 }}
+                        />
+                    </TouchableOpacity>
+                </View>
+                : null}
             <Animated.View style={{ ...styles.imageStyle, transform: [{ rotate: spin }], zIndex: boardZ }}>
                 <Image source={require("../assets/board.png")} style={{ width: "100%", height: "100%" }} />
             </Animated.View>

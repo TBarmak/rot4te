@@ -28,23 +28,23 @@ const tutorialText = [
 
 /* Coordinates to highlight parts of the game (top, left, width, height) */
 const tutorialBoxes = [
-    [-1,-1,0,0],
-    [-1,-1,0,0],
-    [-1,-1,0,0],
-    [-1,-1,0,0],
-    [-1,-1,0,0],
-    [-1,-1,0,0],
-    [0.9 * screenHeight - (chipWidth), 0.2 * screenWidth - chipWidth, 0.6*screenWidth + 2 * chipWidth, 2 * chipWidth],
+    [-1, -1, 0, 0],
+    [-1, -1, 0, 0],
+    [-1, -1, 0, 0],
+    [-1, -1, 0, 0],
+    [-1, -1, 0, 0],
+    [-1, -1, 0, 0],
+    [0.9 * screenHeight - (chipWidth), 0.2 * screenWidth - chipWidth, 0.6 * screenWidth + 2 * chipWidth, 2 * chipWidth],
     [screenHeight * 0.4 + screenWidth * 0.7, 3 * screenWidth / 10, 2 * screenWidth / 5, screenWidth / 5],
-    [screenHeight * 0.4 + screenWidth * 0.75, screenWidth * 0.45, screenWidth/10, screenWidth/10],
-    [-1,-1,0,0],
-    [-1,-1,0,0],
-    [-1,-1,0,0],
-    [-1,-1,0,0],
-    [-1,-1,0,0],
-    [-1,-1,0,0],
-    [-1,-1,0,0],
-    [-1,-1,0,0]
+    [screenHeight * 0.4 + screenWidth * 0.75, screenWidth * 0.45, screenWidth / 10, screenWidth / 10],
+    [-1, -1, 0, 0],
+    [-1, -1, 0, 0],
+    [-1, -1, 0, 0],
+    [-1, -1, 0, 0],
+    [-1, -1, 0, 0],
+    [-1, -1, 0, 0],
+    [-1, -1, 0, 0],
+    [-1, -1, 0, 0]
 ]
 
 export default function Tutorial(props, { navigation }) {
@@ -64,21 +64,23 @@ export default function Tutorial(props, { navigation }) {
                 borderColor: "#1e90ff",
                 borderWidth: 4,
                 borderRadius: 10
-            }}/>
+            }} />
             <View>
                 <Text style={styles.instruction}>{tutorialText[props.index]}</Text>
             </View>
             <View style={styles.buttonView}>
-                <TouchableOpacity style={styles.button} onPress={() => {
-                    if (props.index > 0) {
-                        props.setIndex(props.index - 1)
-                    }
-                }}>
-                    <Text style={styles.buttonText}>Back</Text>
-                </TouchableOpacity>
+                {props.index > 0 && props.index < 14 ?
+                    <TouchableOpacity style={styles.button} onPress={() => {
+                        if (props.index > 0) {
+                            props.setIndex(props.index - 1)
+                        }
+                    }}>
+                        <Text style={styles.buttonText}>Back</Text>
+                    </TouchableOpacity>
+                    : null}
                 <TouchableOpacity style={styles.button} onPress={() => {
                     if (props.index < tutorialText.length - 1) {
-                        if(props.index != 13 && props.index != 14) {
+                        if (props.index != 13 && props.index != 14) {
                             props.setIndex(props.index + 1)
                         } else {
                             props.setZ(-5)
@@ -109,7 +111,7 @@ const styles = StyleSheet.create({
     },
     buttonView: {
         flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "space-around",
         alignItems: "center",
         width: "60%"
     },
