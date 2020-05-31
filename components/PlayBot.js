@@ -31,6 +31,8 @@ export default function PlayBot({ route, navigation }) {
     const [positionValueTwo, setpositionValueTwo] = useState(new Animated.ValueXY({ x: screenWidth * 0.8 - chipWidth / 2, y: screenHeight * 0.9 - chipWidth / 2 }))
     const [turn, setTurn] = useState(true)
     const [botMove, setBotMove] = useState([0, 0, 0])
+    const [botMovePartTwo, setBotMovePartTwo] = useState(false)
+    const [botDepth, setBotDepth] = useState(2)
     const [winner, setWinner] = useState(null)
     const [dropped, setDropped] = useState(false)
     const [rotated, setRotated] = useState(false)
@@ -41,7 +43,6 @@ export default function PlayBot({ route, navigation }) {
     const [oneGoesFirst, setOneGoesFirst] = useState(true)
     const [blocked, setBlocked] = useState(false)
     const [boardZ, setBoardZ] = useState(-1)
-    const [botMovePartTwo, setBotMovePartTwo] = useState(false)
     const [resetting, setResetting] = useState(true)
     const [showTutorial, setShowTutorial] = useState(false)
     const [tutorialIndex, setTutorialIndex] = useState(0)
@@ -111,7 +112,7 @@ export default function PlayBot({ route, navigation }) {
     useEffect(() => {
         if (!turn && !resetting) {
             setBoardZ(-1)
-            setTimeout(() => getBotMove(), 2000)
+            setTimeout(() => getBotMove(), 500)
         }
     }, [turn, resetting])
 
@@ -226,10 +227,7 @@ export default function PlayBot({ route, navigation }) {
 
     /*
     getBotMove() will find a move for the bot and update the botMove state with that move. A move takes
-    the form [colIndex (int), rotDir (int: -1 is ccw or 1 is cw), rotateFirst (boolean)]. The bot considers all
-    posible moves and will pick a move that wins on this turn if possible. If it is not possible, it will go through
-    its moves and pick a move where it is not possible for the opponent to win on the next turn, if one exists. Otherwise,
-    it will pick randomly.
+    the form [colIndex (int), rotDir (int: -1 is ccw or 1 is cw), rotateFirst (boolean)].
     */
     function getBotMove() {
         let candidateMoves = []
@@ -238,7 +236,7 @@ export default function PlayBot({ route, navigation }) {
             for (let rotDir = -1; rotDir < 2; rotDir += 2) {
                 for (let rotateFirst = 0; rotateFirst < 2; rotateFirst++) {
                     if (col < 6 || (board[1] % 2 == 0 && rotateFirst == 0) || (board[1] % 2 == 1 && rotateFirst == 1)) {
-                        let score = testMove([col, rotDir, rotateFirst == 1], board, "1")[0]
+                        let score = scoreMove([col, rotDir, rotateFirst == 1], board, "1", botDepth)
                         if (score == bestScore) {
                             candidateMoves.push([col, rotDir, rotateFirst == 1])
                         } else if (score > bestScore) {
@@ -249,36 +247,43 @@ export default function PlayBot({ route, navigation }) {
                 }
             }
         }
-        if (bestScore == 1) {
-            let move = candidateMoves[Math.floor(Math.random() * candidateMoves.length)]
-            setBotMove(move)
-        } else {
-            let goodMoves = []
-            for (let i = 0; i < candidateMoves.length; i++) {
-                let boardAfterMove = JSON.parse(JSON.stringify(testMove(candidateMoves[i], board, "1")[1]))
-                let okay = true
-                for (let col = 0; col < 7; col++) {
-                    for (let rotDir = -1; rotDir < 2; rotDir += 2) {
-                        for (let rotateFirst = 0; rotateFirst < 2; rotateFirst++) {
-                            if (col < 6 || (boardAfterMove[1] % 2 == 0 && rotateFirst == 0) || (boardAfterMove[1] % 2 == 1 && rotateFirst == 1)) {
-                                let score = testMove([col, rotDir, rotateFirst == 1], boardAfterMove, "0")[0]
-                                if (score == -1) {
-                                    okay = false
-                                }
+        let move = candidateMoves[Math.floor(Math.random() * candidateMoves.length)]
+        setBotMove(move)
+    }
+
+    /*
+    scoreMove(move, board, color, depth) will recursively score a move by looking "depth" moves ahead.
+    The move argument takes the form [colIndex (int), rotDir (int: -1 is ccw or 1 is cw), rotateFirst (boolean)].
+    The board takes the form of a list with two elements: the first is a grid (list of lists) representing 
+    the positions of the chips in the board, and the second is an int representing the orientation of 
+    the board (0-3, inclusive). The color is a string ("0" or "1"). And the depth is an integer. Returns 1 
+    if there is a guaranteed win for player 2, 0 if the game cannot be determined in depth moves, and -1 if
+    player 1 has a guaranteed win within depth moves.
+    */
+    function scoreMove(move, board, color, depth) {
+        let result = testMove(move, board, color)
+        if (result[0] !== 0 || depth == 0) {
+            return result[0]
+        }
+        else {
+            let scores = []
+            for (let col = 0; col < 7; col++) {
+                for (let rotDir = -1; rotDir < 2; rotDir += 2) {
+                    for (let rotateFirst = 0; rotateFirst < 2; rotateFirst++) {
+                        if (col < 6 || (result[1][1] % 2 == 0 && rotateFirst == 0) || (result[1][1] % 2 == 1 && rotateFirst == 1)) {
+                            let score = scoreMove([col, rotDir, rotateFirst == 1], result[1], color == "1" ? "0" : "1", depth - 1)
+                            if (score == -1 && color == "1" || score == 1 && color == "0") {
+                                return score
                             }
+                            scores.push(score)
                         }
                     }
                 }
-                if (okay) {
-                    goodMoves.push(candidateMoves[i])
-                }
             }
-            if (goodMoves.length > 0) {
-                let move = goodMoves[Math.floor(Math.random() * goodMoves.length)]
-                setBotMove(move)
+            if (color == "1") {
+                return Math.min(...scores)
             } else {
-                let move = candidateMoves[Math.floor(Math.random() * candidateMoves.length)]
-                setBotMove(move)
+                return Math.max(...scores)
             }
         }
     }
@@ -294,7 +299,7 @@ export default function PlayBot({ route, navigation }) {
     function testMove(move, board, color) {
         if (!move[2]) {
             if (getHeight(board, move[0]) >= 6 + (board[1] % 2)) {
-                return [-2, board]
+                return [null]
             }
             let resultingBoard = dropChip(board, move[0], color)
             let outcome = getWin(resultingBoard[0])
@@ -327,7 +332,7 @@ export default function PlayBot({ route, navigation }) {
                 }
             }
             if (getHeight(resultingBoard, move[0]) >= 6 + (resultingBoard[1] % 2)) {
-                return [-2, board]
+                return [null]
             }
             resultingBoard = dropChip(resultingBoard, move[0], color)
             outcome = getWin(resultingBoard[0])
@@ -487,8 +492,8 @@ export default function PlayBot({ route, navigation }) {
                     </View>
                 </View> : null
             }
-            <View style={{height: "7%", width: "100%", marginTop: Constants.statusBarHeight}}>
-                <NavHeader name={showTutorial ? "Tutorial":"Play Computer"} goBack={navigation.goBack}/>
+            <View style={{ height: "7%", width: "100%", marginTop: Constants.statusBarHeight }}>
+                <NavHeader name={showTutorial ? "Tutorial" : "Play Computer"} goBack={navigation.goBack} />
             </View>
             {showTutorial ?
                 <View style={{ ...styles.tutorialView, zIndex: tutorialZIndex }}>
