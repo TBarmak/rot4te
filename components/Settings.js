@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Switch } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Switch, Slider } from 'react-native';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
@@ -7,13 +7,17 @@ const screenHeight = Math.round(Dimensions.get('window').height);
 export default function Settings({ route, navigation }) {
     const [oneFirst, setOneFirst] = useState(true)
     const [useOriginalColors, setUseOriginalColors] = useState(true)
+    const [sliderVal, setSliderVal] = useState(1)
+
     const { cameFrom } = route.params
     const { prevOneFirst } = route.params
     const { colors } = route.params
+    const { currDifficulty } = route.params
 
     /* Get the current settings from route.params, and update the state */
     useEffect(() => setOneFirst(prevOneFirst), [prevOneFirst])
     useEffect(() => setUseOriginalColors(colors[0] == "red" && colors[1] == "yellow"), [colors])
+    useEffect(() => setSliderVal(currDifficulty), [currDifficulty])
 
     return (
         <View style={styles.container}>
@@ -42,8 +46,24 @@ export default function Settings({ route, navigation }) {
                         value={useOriginalColors}
                     />
                 </View>
+                {cameFrom == "Play Bot" ?
+                    <View style={styles.item}>
+                        <Text style={{ fontFamily: "sans-serif-light", color: "#fff", fontSize: 20 }}>Difficulty</Text>
+                        <Slider
+                            style={{ width: 200 }}
+                            trackStyle={{height: 30}}
+                            value={sliderVal}
+                            onValueChange={(val) => setSliderVal(val)}
+                            minimumValue={0}
+                            maximumValue={2}
+                            step={1}
+                            thumbTintColor="#ff0"
+                            minimumTrackTintColor="#f00"
+                            maximumTrackTintColor="#fff"
+                        />
+                    </View> : null}
             </View>
-            <TouchableOpacity style={styles.save} onPress={() => navigation.navigate(cameFrom, {oneFirst: oneFirst, colorScheme: useOriginalColors ? ["red", "yellow"] : ["orangered", "darkblue"]})}>
+            <TouchableOpacity style={styles.save} onPress={() => navigation.navigate(cameFrom, { oneFirst: oneFirst, colorScheme: useOriginalColors ? ["red", "yellow"] : ["orangered", "darkblue"], difficulty: sliderVal})}>
                 <Text style={{ fontFamily: "sans-serif-light", color: "#fff", fontSize: 25 }}>Save Changes</Text>
             </TouchableOpacity>
         </View>

@@ -51,6 +51,7 @@ export default function PlayBot({ route, navigation }) {
     const { oneFirst } = route.params
     const { colorScheme } = route.params
     const { tutorial } = route.params
+    const { difficulty } = route.params
 
     /* Show the tutorial if the user came from pressing the tutorial button */
     useEffect(() => {
@@ -78,6 +79,13 @@ export default function PlayBot({ route, navigation }) {
     useEffect(() => {
         setColors(colorScheme)
     }, [colorScheme])
+
+    /* Update the difficulty when it changes. */
+    useEffect(() => {
+        if (difficulty != undefined) {
+            setBotDepth(difficulty)
+        }
+    }, [difficulty])
 
     /* If a chip has been dropped and rotated on a turn, the turn changes. */
     useEffect(() => {
@@ -165,6 +173,7 @@ export default function PlayBot({ route, navigation }) {
             setTurn(oneGoesFirst)
             setBlocked(false)
             setWinner(null)
+            setBotDepth(difficulty != undefined ? difficulty : 1)
         }, 1200)
         setTimeout(() => setResetting(false), 2000)
     }
@@ -507,7 +516,7 @@ export default function PlayBot({ route, navigation }) {
                         <Text style={{ color: "white", fontSize: 20, fontFamily: 'sans-serif-light', padding: 5 }}>Reset Game</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
-                        navigation.navigate("Settings", { cameFrom: "Play Bot", prevOneFirst: oneGoesFirst, colors: colors })
+                        navigation.navigate("Settings", { cameFrom: "Play Bot", prevOneFirst: oneGoesFirst, colors: colors, currDifficulty: botDepth })
                     }}>
                         <Icon
                             name="settings"
