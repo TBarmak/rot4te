@@ -13,12 +13,15 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
-        <Stack.Screen name="Settings" component={Settings} options={{headerShown: false}}/>
-        <Stack.Screen name="Pass and Play" component={PassPlay} options={{headerShown: false}}/>
-        <Stack.Screen name="Tutorial" component={Tutorial} options={{headerShown: false}}/>
-        <Stack.Screen name="Play Bot" component={PlayBot} options={{headerShown: false}}/>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false
+        }}>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Settings" component={Settings} />
+        <Stack.Screen name="Pass and Play" component={PassPlay} />
+        <Stack.Screen name="Tutorial" component={Tutorial} />
+        <Stack.Screen name="Play Bot" component={PlayBot} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Dimensions, Animated, PanResponder, TouchableOpacity, Image, Easing } from 'react-native';
+import Constants from 'expo-constants';
 import Icon from 'react-native-vector-icons/Feather';
 import { getHeight } from '../boardFunctions';
 import { dropChip } from '../boardFunctions';
@@ -10,6 +11,7 @@ import ColumnIndicator from './ColumnIndicator';
 import RotateDropAnimation from './RotateDropAnimation';
 import LoadingScreen from './LoadingScreen';
 import Tutorial from './Tutorial';
+import NavHeader from './NavHeader';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
@@ -485,6 +487,9 @@ export default function PlayBot({ route, navigation }) {
                     </View>
                 </View> : null
             }
+            <View style={{height: "7%", width: "100%", marginTop: Constants.statusBarHeight}}>
+                <NavHeader name={showTutorial ? "Tutorial":"Play Computer"} goBack={navigation.goBack}/>
+            </View>
             {showTutorial ?
                 <View style={{ ...styles.tutorialView, zIndex: tutorialZIndex }}>
                     <Tutorial index={tutorialIndex} setShowTutorial={setShowTutorial} setIndex={setTutorialIndex} setZ={setTutorialZIndex} />
@@ -601,7 +606,6 @@ const styles = StyleSheet.create({
     },
     header: {
         width: "100%",
-        marginTop: 20,
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center"

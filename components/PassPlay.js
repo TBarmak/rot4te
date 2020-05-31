@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Dimensions, Animated, PanResponder, TouchableOpacity, Image, Easing } from 'react-native';
+import Constants from 'expo-constants';
 import Icon from 'react-native-vector-icons/Feather';
 import { getHeight } from '../boardFunctions';
 import { dropChip } from '../boardFunctions';
@@ -9,6 +10,7 @@ import { alertWinner } from '../boardFunctions';
 import ColumnIndicator from './ColumnIndicator';
 import RotateDropAnimation from './RotateDropAnimation';
 import LoadingScreen from './LoadingScreen';
+import NavHeader from './NavHeader';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
@@ -314,6 +316,9 @@ export default function PassPlay({ route, navigation }) {
                     </View>
                 </View> : null
             }
+            <View style={{height: "7%", width: "100%", marginTop: Constants.statusBarHeight}}>
+                <NavHeader name="Pass and Play" goBack={navigation.goBack}/>
+            </View>
             <View style={styles.header}>
                 <TouchableOpacity style={styles.reset} onPress={() => resetGame()}>
                     <Text style={{ color: "white", fontSize: 20, fontFamily: 'sans-serif-light', padding: 5 }}>Reset Game</Text>
@@ -423,7 +428,6 @@ const styles = StyleSheet.create({
     },
     header: {
         width: "100%",
-        marginTop: 20,
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center"
