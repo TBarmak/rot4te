@@ -420,7 +420,7 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        margin: 20,
+        margin: 10,
         width: screenWidth * 0.4,
         height: screenWidth * 0.15,
         backgroundColor: "#1e90ff",

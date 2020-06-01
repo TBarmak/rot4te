@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Image} from 'react-native';
 import LoadingScreen from './LoadingScreen';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
@@ -14,8 +14,7 @@ export default function HomeScreen({ navigation }) {
                 <LoadingScreen/>
             </View>
             <View style={styles.titleView}>
-                <Text style={{ color: "red", fontSize: screenWidth / 7, fontFamily: 'sans-serif' }}>4-In-A-Row</Text>
-                <Text style={{ color: "yellow", fontSize: screenWidth / 8, transform: [{ rotate: "-45deg" }], fontFamily: 'sans-serif-light' }}>Rotate</Text>
+                <Image source={require("../assets/logo.png")} style={{ width: screenWidth * 0.8, height: screenWidth * 0.8, zIndex: -1 }}/>
             </View>
             <View style={styles.buttonView}>
                 <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Pass and Play", { oneFirst: true, colorScheme: ["red", "yellow"]})}>
@@ -62,7 +61,7 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         justifyContent: "center",
         alignItems: "center",
-        padding: 30
+        padding: 10
     },
     chip: {
         position: "absolute",

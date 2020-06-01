@@ -10,7 +10,7 @@ export default function NavHeader(props) {
                     name="arrow-left"
                     size={30}
                     color="#1e90ff"
-                    style={{ margin: 20 }}
+                    style={{ margin: 10 }}
                 />
             </TouchableOpacity>
             <Text style={styles.text}>{props.name}</Text>

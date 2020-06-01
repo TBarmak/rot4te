@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
         width: screenWidth * 0.8,
         height: screenWidth * 0.15,
         backgroundColor: "#1e90ff",
-        padding: 20,
+        padding: 10,
         borderRadius: screenWidth * 0.08,
         margin: 20
     },
