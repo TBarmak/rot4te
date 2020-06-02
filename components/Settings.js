@@ -51,7 +51,7 @@ export default function Settings({ route, navigation }) {
                         <Text style={{ fontFamily: "sans-serif-light", color: "#fff", fontSize: 20 }}>Difficulty</Text>
                         <Slider
                             style={{ width: 200 }}
-                            trackStyle={{height: 30}}
+                            trackStyle={{ height: 30 }}
                             value={sliderVal}
                             onValueChange={(val) => setSliderVal(val)}
                             minimumValue={0}
@@ -63,7 +63,7 @@ export default function Settings({ route, navigation }) {
                         />
                     </View> : null}
             </View>
-            <TouchableOpacity style={styles.save} onPress={() => navigation.navigate(cameFrom, { oneFirst: oneFirst, colorScheme: useOriginalColors ? ["red", "yellow"] : ["orangered", "darkblue"], difficulty: sliderVal})}>
+            <TouchableOpacity style={styles.save} onPress={() => navigation.navigate(cameFrom, { oneFirst: oneFirst, colorScheme: useOriginalColors ? ["red", "yellow"] : ["orangered", "darkblue"], difficulty: sliderVal })}>
                 <Text style={{ fontFamily: "sans-serif-light", color: "#fff", fontSize: 25 }}>Save Changes</Text>
             </TouchableOpacity>
         </View>

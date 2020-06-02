@@ -11,6 +11,7 @@ import ColumnIndicator from './ColumnIndicator';
 import RotateDropAnimation from './RotateDropAnimation';
 import LoadingScreen from './LoadingScreen';
 import NavHeader from './NavHeader';
+import { Audio } from 'expo-av';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
@@ -43,6 +44,17 @@ export default function PassPlay({ route, navigation }) {
 
     const { oneFirst } = route.params
     const { colorScheme } = route.params
+
+    const clinkSound = new Audio.Sound()
+
+    async function makeClink() {
+        try {
+            await clinkSound.loadAsync(require('../assets/clink.wav'))
+            await clinkSound.playAsync()
+        } catch (err) {
+            console.log(err)
+        }
+    }
 
     /* Set which player goes first from the route.params. */
     useEffect(() => {
@@ -196,6 +208,7 @@ export default function PassPlay({ route, navigation }) {
                     setBlocked(true)
                     setBoardZ(1)
                     positionValueOne.setValue({ x: newX, y: newY })
+                    setTimeout(() => makeClink(), 300)
                     if (board[1] % 2 === 0) {
                         Animated.timing(
                             positionValueOne, {
@@ -267,6 +280,7 @@ export default function PassPlay({ route, navigation }) {
                     setBlocked(true)
                     setBoardZ(1)
                     positionValueTwo.setValue({ x: newX, y: newY })
+                    setTimeout(() => makeClink(), 300)
                     if (board[1] % 2 === 0) {
                         Animated.timing(
                             positionValueTwo, {
@@ -316,8 +330,8 @@ export default function PassPlay({ route, navigation }) {
                     </View>
                 </View> : null
             }
-            <View style={{height: "7%", width: "100%", marginTop: Constants.statusBarHeight}}>
-                <NavHeader name="Pass and Play" goBack={navigation.goBack}/>
+            <View style={{ height: "7%", width: "100%", marginTop: Constants.statusBarHeight }}>
+                <NavHeader name="Pass and Play" goBack={navigation.goBack} />
             </View>
             <View style={styles.header}>
                 <TouchableOpacity style={styles.reset} onPress={() => resetGame()}>
@@ -338,7 +352,7 @@ export default function PassPlay({ route, navigation }) {
                 <Image source={require("../assets/board.png")} style={{ width: "100%", height: "100%" }} />
             </Animated.View>
             <Animated.View style={{ ...styles.imageStyle, transform: [{ rotate: spin }], zIndex: -2 }}>
-                <RotateDropAnimation data={board} size={chipWidth} colors={colors} drop={dropped} />
+                <RotateDropAnimation data={board} size={chipWidth} colors={colors} drop={dropped} clink={makeClink} />
             </Animated.View>
             <Animated.View style={{ ...styles.imageStyle, transform: [{ rotate: spin }], zIndex: -3 }}>
                 <ColumnIndicator column={currCol} orientation={board[1]} />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Image} from 'react-native';
+import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Image } from 'react-native';
 import LoadingScreen from './LoadingScreen';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
@@ -10,17 +10,17 @@ export default function HomeScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <View style={{width: "100%", height: "50%", position: "absolute", top: screenHeight * 0.2}}>
-                <LoadingScreen/>
+            <View style={{ width: "100%", height: "50%", position: "absolute", top: screenHeight * 0.2 }}>
+                <LoadingScreen />
             </View>
             <View style={styles.titleView}>
-                <Image source={require("../assets/logo.png")} style={{ width: screenWidth * 0.8, height: screenWidth * 0.8, zIndex: -1 }}/>
+                <Image source={require("../assets/logo.png")} style={{ width: screenWidth * 0.8, height: screenWidth * 0.8, zIndex: -1 }} />
             </View>
             <View style={styles.buttonView}>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Pass and Play", { oneFirst: true, colorScheme: ["red", "yellow"]})}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Pass and Play", { oneFirst: true, colorScheme: ["red", "yellow"] })}>
                     <Text style={{ fontFamily: 'sans-serif-light', color: "white", fontSize: 22 }}>Pass And Play</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Play Bot", { tutorial: false, oneFirst: true, colorScheme: ["red", "yellow"]})}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Play Bot", { tutorial: false, oneFirst: true, colorScheme: ["red", "yellow"] })}>
                     <Text style={{ fontFamily: 'sans-serif-light', color: "white", fontSize: 22 }}>Play The Computer</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Play Bot", { tutorial: true, oneFirst: true, colorScheme: ["red", "yellow"] })}>

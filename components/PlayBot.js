@@ -12,6 +12,7 @@ import RotateDropAnimation from './RotateDropAnimation';
 import LoadingScreen from './LoadingScreen';
 import Tutorial from './Tutorial';
 import NavHeader from './NavHeader';
+import { Audio } from 'expo-av';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
@@ -52,6 +53,17 @@ export default function PlayBot({ route, navigation }) {
     const { colorScheme } = route.params
     const { tutorial } = route.params
     const { difficulty } = route.params
+
+    const clinkSound = new Audio.Sound()
+
+    async function makeClink() {
+        try {
+            await clinkSound.loadAsync(require('../assets/clink.wav'))
+            await clinkSound.playAsync()
+        } catch (err) {
+            console.log(err)
+        }
+    }
 
     /* Show the tutorial if the user came from pressing the tutorial button */
     useEffect(() => {
@@ -120,7 +132,7 @@ export default function PlayBot({ route, navigation }) {
     useEffect(() => {
         if (!turn && !resetting) {
             setBoardZ(-1)
-            setTimeout(() => getBotMove(), 500)
+            setTimeout(() => getBotMove(), 1000)
         }
     }, [turn, resetting])
 
@@ -367,6 +379,7 @@ export default function PlayBot({ route, navigation }) {
         } else {
             newX = portraitColumns[botMove[0]] * screenWidth
         }
+        setTimeout(() => makeClink(), 300)
         Animated.timing(
             positionValueTwo, {
             toValue: { x: newX, y: screenHeight * 0.15 },
@@ -448,6 +461,7 @@ export default function PlayBot({ route, navigation }) {
                     setBlocked(true)
                     setBoardZ(1)
                     positionValueOne.setValue({ x: newX, y: newY })
+                    setTimeout(() => makeClink(), 300)
                     if (board[1] % 2 === 0) {
                         Animated.timing(
                             positionValueOne, {
@@ -531,7 +545,7 @@ export default function PlayBot({ route, navigation }) {
                 <Image source={require("../assets/board.png")} style={{ width: "100%", height: "100%" }} />
             </Animated.View>
             <Animated.View style={{ ...styles.imageStyle, transform: [{ rotate: spin }], zIndex: -2 }}>
-                <RotateDropAnimation data={board} size={chipWidth} colors={colors} drop={dropped} />
+                <RotateDropAnimation data={board} size={chipWidth} colors={colors} drop={dropped} clink={makeClink} />
             </Animated.View>
             <Animated.View style={{ ...styles.imageStyle, transform: [{ rotate: spin }], zIndex: -3 }}>
                 <ColumnIndicator column={currCol} orientation={board[1]} />
