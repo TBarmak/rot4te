@@ -379,7 +379,6 @@ export default function PlayBot({ route, navigation }) {
         } else {
             newX = portraitColumns[botMove[0]] * screenWidth
         }
-        setTimeout(() => makeClink(), 300)
         Animated.timing(
             positionValueTwo, {
             toValue: { x: newX, y: screenHeight * 0.15 },
@@ -388,6 +387,7 @@ export default function PlayBot({ route, navigation }) {
         }
         ).start(() => {
             setBoardZ(1)
+            setTimeout(() => makeClink(), 300)
             if (board[1] % 2 === 0) {
                 Animated.timing(
                     positionValueTwo, {
@@ -520,7 +520,7 @@ export default function PlayBot({ route, navigation }) {
             </View>
             {showTutorial ?
                 <View style={{ ...styles.tutorialView, zIndex: tutorialZIndex }}>
-                    <Tutorial index={tutorialIndex} setShowTutorial={setShowTutorial} setIndex={setTutorialIndex} setZ={setTutorialZIndex} />
+                    <Tutorial index={tutorialIndex} setShowTutorial={setShowTutorial} setIndex={setTutorialIndex} setZ={setTutorialZIndex} dropped={dropped}/>
                 </View> : null
             }
             <View style={{ zIndex: -4, position: "absolute", width: "100%", height: "100%", backgroundColor: "#fff" }} />
@@ -626,7 +626,7 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        margin: 20,
+        margin: 10,
         width: screenWidth * 0.4,
         height: screenWidth * 0.15,
         backgroundColor: "#1e90ff",
