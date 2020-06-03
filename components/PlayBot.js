@@ -53,6 +53,7 @@ export default function PlayBot({ route, navigation }) {
     const { colorScheme } = route.params
     const { tutorial } = route.params
     const { difficulty } = route.params
+    const { music } = route.params
 
     const clinkSound = new Audio.Sound()
 
@@ -520,7 +521,7 @@ export default function PlayBot({ route, navigation }) {
             </View>
             {showTutorial ?
                 <View style={{ ...styles.tutorialView, zIndex: tutorialZIndex }}>
-                    <Tutorial index={tutorialIndex} setShowTutorial={setShowTutorial} setIndex={setTutorialIndex} setZ={setTutorialZIndex} dropped={dropped}/>
+                    <Tutorial index={tutorialIndex} setShowTutorial={setShowTutorial} setIndex={setTutorialIndex} setZ={setTutorialZIndex} dropped={dropped} />
                 </View> : null
             }
             <View style={{ zIndex: -4, position: "absolute", width: "100%", height: "100%", backgroundColor: "#fff" }} />
@@ -530,7 +531,7 @@ export default function PlayBot({ route, navigation }) {
                         <Text style={{ color: "white", fontSize: 20, fontFamily: 'sans-serif-light', padding: 5 }}>Reset Game</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
-                        navigation.navigate("Settings", { cameFrom: "Play Bot", prevOneFirst: oneGoesFirst, colors: colors, currDifficulty: botDepth })
+                        navigation.navigate("Settings", { cameFrom: "Play Bot", prevOneFirst: oneGoesFirst, colors: colors, currDifficulty: botDepth, music: music })
                     }}>
                         <Icon
                             name="settings"

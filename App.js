@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
 import PassPlay from './components/PassPlay'
 import HomeScreen from './components/HomeScreen';
@@ -7,26 +7,10 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
 import Tutorial from './components/Tutorial';
 import PlayBot from './components/PlayBot';
-import { Audio } from 'expo-av';
 
 const Stack = createStackNavigator();
 
 export default function App() {
-  const backgroundAudio = new Audio.Sound()
-
-  async function startBackgroundMusic() {
-    try {
-      await backgroundAudio.loadAsync(require('./assets/background.wav'), { isLooping: true })
-      await backgroundAudio.playAsync()
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  useEffect(() => {
-    startBackgroundMusic()
-  }, [])
-
   return (
     <NavigationContainer>
       <Stack.Navigator

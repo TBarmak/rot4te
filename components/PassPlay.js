@@ -44,6 +44,7 @@ export default function PassPlay({ route, navigation }) {
 
     const { oneFirst } = route.params
     const { colorScheme } = route.params
+    const { music } = route.params
 
     const clinkSound = new Audio.Sound()
 
@@ -338,7 +339,7 @@ export default function PassPlay({ route, navigation }) {
                     <Text style={{ color: "white", fontSize: 20, fontFamily: 'sans-serif-light', padding: 5 }}>Reset Game</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => {
-                    navigation.navigate("Settings", { cameFrom: "Pass and Play", prevOneFirst: oneGoesFirst, colors: colors })
+                    navigation.navigate("Settings", { cameFrom: "Pass and Play", prevOneFirst: oneGoesFirst, colors: colors, music: music })
                 }}>
                     <Icon
                         name="settings"

@@ -8,16 +8,34 @@ export default function Settings({ route, navigation }) {
     const [oneFirst, setOneFirst] = useState(true)
     const [useOriginalColors, setUseOriginalColors] = useState(true)
     const [sliderVal, setSliderVal] = useState(1)
+    const [playBackgroundMusic, setPlayBackgroundMusic] = useState(false)
 
     const { cameFrom } = route.params
     const { prevOneFirst } = route.params
     const { colors } = route.params
     const { currDifficulty } = route.params
+    const { music } = route.params
 
     /* Get the current settings from route.params, and update the state */
     useEffect(() => setOneFirst(prevOneFirst), [prevOneFirst])
     useEffect(() => setUseOriginalColors(colors[0] == "red" && colors[1] == "yellow"), [colors])
     useEffect(() => setSliderVal(currDifficulty), [currDifficulty])
+
+    useEffect(() => {
+        music.getStatusAsync().then((ret) => {
+            setPlayBackgroundMusic(ret.isPlaying)
+        })
+    }, [])
+
+    useEffect(() => {
+        music.getStatusAsync().then((ret) => {
+            if (!playBackgroundMusic) {
+                music.pauseAsync()
+            } else if (playBackgroundMusic) {
+                music.playAsync()
+            }
+        })
+    }, [playBackgroundMusic])
 
     return (
         <View style={styles.container}>
@@ -62,8 +80,20 @@ export default function Settings({ route, navigation }) {
                             maximumTrackTintColor="#fff"
                         />
                     </View> : null}
+                <View style={styles.item}>
+                    <Text style={{ fontFamily: "sans-serif-light", color: "#fff", fontSize: 20 }}>Background Music</Text>
+                    <Switch
+                        trackColor={{ false: "#fff", true: "red" }}
+                        thumbColor={playBackgroundMusic ? "yellow" : "#fff"}
+                        ios_backgroundColor="#fff"
+                        onValueChange={() => {
+                            setPlayBackgroundMusic(!playBackgroundMusic)
+                        }}
+                        value={playBackgroundMusic}
+                    />
+                </View>
             </View>
-            <TouchableOpacity style={styles.save} onPress={() => navigation.navigate(cameFrom, { oneFirst: oneFirst, colorScheme: useOriginalColors ? ["red", "yellow"] : ["orangered", "darkblue"], difficulty: sliderVal })}>
+            <TouchableOpacity style={styles.save} onPress={() => navigation.navigate(cameFrom, { oneFirst: oneFirst, colorScheme: useOriginalColors ? ["red", "yellow"] : ["orangered", "darkblue"], difficulty: sliderVal, music: music })}>
                 <Text style={{ fontFamily: "sans-serif-light", color: "#fff", fontSize: 25 }}>Save Changes</Text>
             </TouchableOpacity>
         </View>
