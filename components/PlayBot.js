@@ -133,7 +133,7 @@ export default function PlayBot({ route, navigation }) {
     useEffect(() => {
         if (!turn && !resetting) {
             setBoardZ(-1)
-            setTimeout(() => getBotMove(), 1000)
+            setTimeout(() => getBotMove(), 2000)
         }
     }, [turn, resetting])
 
