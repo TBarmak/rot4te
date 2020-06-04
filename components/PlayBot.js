@@ -261,7 +261,7 @@ export default function PlayBot({ route, navigation }) {
                         let score = scoreMove([col, rotDir, rotateFirst == 1], board, "1", botDepth)
                         if (score == bestScore) {
                             candidateMoves.push([col, rotDir, rotateFirst == 1])
-                        } else if (score > bestScore) {
+                        } else if (score != null && score > bestScore) {
                             bestScore = score
                             candidateMoves = [[col, rotDir, rotateFirst == 1]]
                         }
