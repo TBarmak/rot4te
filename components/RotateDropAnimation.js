@@ -7,7 +7,6 @@ const screenHeight = Math.round(Dimensions.get('window').height);
 export default function RotateDropAnimation(props) {
     const [coor, setCoor] = useState([])
     const [board, setBoard] = useState([[['', '', '', '', '', '', ''], ['', '', '', '', '', '', ''], ['', '', '', '', '', '', ''], ['', '', '', '', '', '', ''], ['', '', '', '', '', '', ''], ['', '', '', '', '', '', '']], 0])
-    const [clinked, setClinked] = useState(false)
 
     /* When the board state is updated, reset the position of the animated coordinates.*/
     useEffect(() => {
@@ -30,7 +29,6 @@ export default function RotateDropAnimation(props) {
         if (props.data[1] == board[1]) {
             let copy = JSON.parse(JSON.stringify(props.data))
             setBoard(copy)
-            setClinked(false)
         } else {
             animateRotation(props.data[1])
             setTimeout(() => setBoard(JSON.parse(JSON.stringify(props.data))), 500)
@@ -42,14 +40,15 @@ export default function RotateDropAnimation(props) {
     The direction argument is an int (0-3, inclusive) that represents the ending orientation of the board.
     */
     function animateRotation(direction) {
+        let clinked = false
         if (direction == 0) {
             for (let c = 0; c < board[0][0].length; c++) {
                 let count = 0
                 for (let r = board[0].length - 1; r >= 0; r--) {
                     if (board[0][r][c] != '') {
-                        if (!clinked) {
+                        if (!clinked && count != board[0].length - 1 - r) {
                             props.clink()
-                            setClinked(true)
+                            clinked = true
                         }
                         Animated.timing(
                             coor[r][c], {
@@ -67,9 +66,9 @@ export default function RotateDropAnimation(props) {
                 let count = 0
                 for (let c = board[0][0].length - 1; c >= 0; c--) {
                     if (board[0][r][c] != '') {
-                        if (!clinked) {
+                        if (!clinked && count != board[0][0].length - 1 - c) {
                             props.clink()
-                            setClinked(true)
+                            clinked = true
                         }
                         Animated.timing(
                             coor[r][c], {
@@ -87,9 +86,9 @@ export default function RotateDropAnimation(props) {
                 let count = 0
                 for (let r = 0; r < board[0].length; r++) {
                     if (board[0][r][c] != '') {
-                        if (!clinked) {
+                        if (!clinked && count != r) {
                             props.clink()
-                            setClinked(true)
+                            clinked = true
                         }
                         Animated.timing(
                             coor[r][c], {
@@ -107,9 +106,9 @@ export default function RotateDropAnimation(props) {
                 let count = 0
                 for (let c = 0; c < board[0][0].length; c++) {
                     if (board[0][r][c] != '') {
-                        if (!clinked) {
+                        if (!clinked && count != c) {
                             props.clink()
-                            setClinked(true)
+                            clinked = true
                         }
                         Animated.timing(
                             coor[r][c], {

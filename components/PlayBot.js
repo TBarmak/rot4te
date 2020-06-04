@@ -60,7 +60,7 @@ export default function PlayBot({ route, navigation }) {
     async function makeClink() {
         try {
             await clinkSound.loadAsync(require('../assets/clink.wav'))
-            await clinkSound.playAsync()
+            await clinkSound.replayAsync()
         } catch (err) {
             console.log(err)
         }
