@@ -25,7 +25,7 @@ export default function HomeScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <View style={{ width: "100%", height: "50%", position: "absolute", top: screenHeight * 0.2 }}>
+            <View style={{ width: "100%", height: "50%", position: "absolute", top: screenHeight * 0.2, zIndex: 1 }}>
                 <LoadingScreen />
             </View>
             <View style={styles.titleView}>
@@ -67,7 +67,8 @@ const styles = StyleSheet.create({
         height: "50%",
         flexDirection: "column",
         justifyContent: "space-evenly",
-        alignItems: "center"
+        alignItems: "center",
+        zIndex: 2
     },
     button: {
         backgroundColor: "#1e90ff",
