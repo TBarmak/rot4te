@@ -138,7 +138,8 @@ export default function PassPlay({ route, navigation }) {
             boardRotation, {
             toValue: boardRotation._value + angle,
             easing: Easing.bounce,
-            duration: 1000
+            duration: 1000,
+            useNativeDriver: false, 
         }
         ).start(() => {
             setRotated(true)
@@ -215,7 +216,8 @@ export default function PassPlay({ route, navigation }) {
                             positionValueOne, {
                             toValue: { x: newX, y: screenHeight * 0.3 + screenWidth * 0.7 - (1.05 * chipWidth) * (1 + colHeight) },
                             easing: Easing.bounce,
-                            duration: 1000
+                            duration: 1000,
+                            useNativeDriver: false, 
                         }
                         ).start(() => {
                             setDropped(true)
@@ -228,7 +230,8 @@ export default function PassPlay({ route, navigation }) {
                             positionValueOne, {
                             toValue: { x: newX, y: (screenHeight * 0.3 + screenWidth * 0.82) - (1.19 * chipWidth) * (1 + colHeight) },
                             easing: Easing.bounce,
-                            duration: 1000
+                            duration: 1000,
+                            useNativeDriver: false, 
                         }
                         ).start(() => {
                             setDropped(true)
@@ -242,7 +245,8 @@ export default function PassPlay({ route, navigation }) {
                         positionValueOne, {
                         toValue: { x: screenWidth / 5 - chipWidth / 2, y: screenHeight * 0.9 - chipWidth / 2 },
                         easing: Easing.ease,
-                        duration: 200
+                        duration: 200,
+                        useNativeDriver: false, 
                     }
                     ).start()
                 }
@@ -287,7 +291,8 @@ export default function PassPlay({ route, navigation }) {
                             positionValueTwo, {
                             toValue: { x: newX, y: screenHeight * 0.3 + screenWidth * 0.7 - (1.05 * chipWidth) * (1 + colHeight) },
                             easing: Easing.bounce,
-                            duration: 1000
+                            duration: 1000,
+                            useNativeDriver: false, 
                         }
                         ).start(() => {
                             setDropped(true)
@@ -300,7 +305,8 @@ export default function PassPlay({ route, navigation }) {
                             positionValueTwo, {
                             toValue: { x: newX, y: (screenHeight * 0.3 + screenWidth * 0.82) - (1.19 * chipWidth) * (1 + colHeight) },
                             easing: Easing.bounce,
-                            duration: 1000
+                            duration: 1000,
+                            useNativeDriver: false, 
                         }
                         ).start(() => {
                             setDropped(true)
@@ -314,7 +320,8 @@ export default function PassPlay({ route, navigation }) {
                         positionValueTwo, {
                         toValue: { x: screenWidth * 0.8 - chipWidth / 2, y: screenHeight * 0.9 - chipWidth / 2 },
                         easing: Easing.ease,
-                        duration: 200
+                        duration: 200,
+                        useNativeDriver: false, 
                     }
                     ).start()
                 }
@@ -339,7 +346,7 @@ export default function PassPlay({ route, navigation }) {
                     <Text style={{ color: "white", fontSize: 20, fontFamily: 'sans-serif-light', padding: 5 }}>Reset Game</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => {
-                    navigation.navigate("Settings", { cameFrom: "Pass and Play", prevOneFirst: oneGoesFirst, colors: colors, music: music })
+                    navigation.navigate("Settings", { cameFrom: "Pass and Play", prevOneFirst: oneGoesFirst, colors: colors })
                 }}>
                     <Icon
                         name="settings"

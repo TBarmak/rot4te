@@ -32,13 +32,13 @@ export default function HomeScreen({ navigation }) {
                 <Image source={require("../assets/logo.png")} style={{ width: screenWidth * 0.8, height: screenWidth * 0.8, zIndex: -1 }} />
             </View>
             <View style={styles.buttonView}>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Pass and Play", { oneFirst: true, colorScheme: ["red", "yellow"], music: backgroundAudio })}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Pass and Play", { oneFirst: true, colorScheme: ["red", "yellow"] })}>
                     <Text style={{ fontFamily: 'sans-serif-light', color: "white", fontSize: 22 }}>Pass And Play</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Play Bot", { tutorial: false, oneFirst: true, colorScheme: ["red", "yellow"], music: backgroundAudio })}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Play Bot", { tutorial: false, oneFirst: true, colorScheme: ["red", "yellow"] })}>
                     <Text style={{ fontFamily: 'sans-serif-light', color: "white", fontSize: 22 }}>Play The Computer</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Play Bot", { tutorial: true, oneFirst: true, colorScheme: ["red", "yellow"], music: backgroundAudio })}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Play Bot", { tutorial: true, oneFirst: true, colorScheme: ["red", "yellow"] })}>
                     <Text style={{ fontFamily: 'sans-serif-light', color: "white", fontSize: 22 }}>Tutorial</Text>
                 </TouchableOpacity>
             </View>

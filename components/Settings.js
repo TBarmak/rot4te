@@ -93,7 +93,7 @@ export default function Settings({ route, navigation }) {
                     />
                 </View>
             </View>
-            <TouchableOpacity style={styles.save} onPress={() => navigation.navigate(cameFrom, { oneFirst: oneFirst, colorScheme: useOriginalColors ? ["red", "yellow"] : ["orangered", "darkblue"], difficulty: sliderVal, music: music })}>
+            <TouchableOpacity style={styles.save} onPress={() => navigation.navigate(cameFrom, { oneFirst: oneFirst, colorScheme: useOriginalColors ? ["red", "yellow"] : ["orangered", "darkblue"], difficulty: sliderVal })}>
                 <Text style={{ fontFamily: "sans-serif-light", color: "#fff", fontSize: 25 }}>Save Changes</Text>
             </TouchableOpacity>
         </View>
