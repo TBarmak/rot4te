@@ -400,7 +400,6 @@ export default function PlayBot({ route, navigation }) {
                     useNativeDriver: false, 
                 }
                 ).start(() => {
-                    console.log("Dropping")
                     setBoard(dropChip(board, botMove[0], "1"))
                     setDropped(true)
                     positionValueTwo.setValue({ x: screenWidth * 0.8 - chipWidth / 2, y: screenHeight * 0.9 - chipWidth / 2 })
@@ -414,7 +413,6 @@ export default function PlayBot({ route, navigation }) {
                     useNativeDriver: false, 
                 }
                 ).start(() => {
-                    console.log("Dropping")
                     setBoard(dropChip(board, botMove[0], "1"))
                     setDropped(true)
                     positionValueTwo.setValue({ x: screenWidth * 0.8 - chipWidth / 2, y: screenHeight * 0.9 - chipWidth / 2 })
