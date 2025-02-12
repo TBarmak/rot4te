@@ -51,7 +51,7 @@ const tutorialBoxes = [
     [[-1, -1, 0, 0], [-1, -1, 0, 0]]
 ]
 
-export default function Tutorial(props, { navigation }) {
+export default function Tutorial(props) {
     useEffect(() => {
         tutorialText[15] = "Good job! Now finish the move by " + (props.dropped ? "rotating." : "dropping a chip.")
     }, [props.dropped])

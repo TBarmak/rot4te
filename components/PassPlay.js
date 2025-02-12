@@ -38,7 +38,7 @@ export default function PassPlay({ route, navigation }) {
     const [currCol, setCurrCol] = useState(-1)
     const [colors, setColors] = useState(["red", "yellow"])
     const [blocked, setBlocked] = useState(false)
-    const [boardZ, setBoardZ] = useState(-1)
+    const [boardZ, setBoardZ] = useState(2)
     const [oneGoesFirst, setOneGoesFirst] = useState(true)
     const [resetting, setResetting] = useState(true)
 
@@ -192,7 +192,7 @@ export default function PassPlay({ route, navigation }) {
         onStartShouldSetPanResponder: () => true,
         onPanResponderMove: (event, gestureState) => {
             if (turn && winner == null && dropped == false && !blocked) {
-                setBoardZ(-1)
+                setBoardZ(2)
                 positionValueOne.setValue({ x: gestureState.moveX - chipWidth / 2, y: gestureState.moveY - chipWidth / 2 })
                 if (parseFloat(JSON.stringify(positionValueOne.getLayout().top)) < screenHeight * 0.25) {
                     setCurrCol(getClosestColumn(positionValueOne.getLayout().left)[1])
@@ -208,7 +208,7 @@ export default function PassPlay({ route, navigation }) {
                 let colHeight = getHeight(board, col[1])
                 if (colHeight < 6 + (board[1] % 2) && newY < screenHeight * 0.25 && !blocked) {
                     setBlocked(true)
-                    setBoardZ(1)
+                    setBoardZ(4)
                     positionValueOne.setValue({ x: newX, y: newY })
                     setTimeout(() => makeClink(), 300)
                     if (board[1] % 2 === 0) {
@@ -267,7 +267,7 @@ export default function PassPlay({ route, navigation }) {
         onStartShouldSetPanResponder: () => true,
         onPanResponderMove: (event, gestureState) => {
             if (!turn && winner == null && dropped === false && !blocked) {
-                setBoardZ(-1)
+                setBoardZ(2)
                 positionValueTwo.setValue({ x: gestureState.moveX - chipWidth / 2, y: gestureState.moveY - chipWidth / 2 })
                 if (parseFloat(JSON.stringify(positionValueTwo.getLayout().top)) < screenHeight * 0.25) {
                     setCurrCol(getClosestColumn(positionValueTwo.getLayout().left)[1])
@@ -283,7 +283,7 @@ export default function PassPlay({ route, navigation }) {
                 let colHeight = getHeight(board, col[1])
                 if (colHeight < 6 + (board[1] % 2) && newY < screenHeight * 0.25) {
                     setBlocked(true)
-                    setBoardZ(1)
+                    setBoardZ(4)
                     positionValueTwo.setValue({ x: newX, y: newY })
                     setTimeout(() => makeClink(), 300)
                     if (board[1] % 2 === 0) {
@@ -332,7 +332,7 @@ export default function PassPlay({ route, navigation }) {
     return (
         <View style={styles.container}>
             {resetting ?
-                <View style={{ width: "100%", height: "100%", zIndex: 3, backgroundColor: "white" }}>
+                <View style={{ width: "100%", height: "100%", zIndex: 6, backgroundColor: "white" }}>
                     <View style={{ position: "absolute", left: 0, top: screenHeight * 3 / 8 }}>
                         <LoadingScreen style={{ top: screenHeight * 0.5 }} />
                     </View>
@@ -359,10 +359,10 @@ export default function PassPlay({ route, navigation }) {
             <Animated.View style={{ ...styles.imageStyle, transform: [{ rotate: spin }], zIndex: boardZ }}>
                 <Image source={require("../assets/board.png")} style={{ width: "100%", height: "100%" }} />
             </Animated.View>
-            <Animated.View style={{ ...styles.imageStyle, transform: [{ rotate: spin }], zIndex: -2 }}>
+            <Animated.View style={{ ...styles.imageStyle, transform: [{ rotate: spin }], zIndex: 1 }}>
                 <RotateDropAnimation data={board} size={chipWidth} colors={colors} drop={dropped} clink={makeClink} />
             </Animated.View>
-            <Animated.View style={{ ...styles.imageStyle, transform: [{ rotate: spin }], zIndex: -3 }}>
+            <Animated.View style={{ ...styles.imageStyle, transform: [{ rotate: spin }], zIndex: 0 }}>
                 <ColumnIndicator column={currCol} orientation={board[1]} />
             </Animated.View>
             <View style={{ ...styles.rotateButtons, backgroundColor: rotated ? "transparent" : "#ccc" }}>

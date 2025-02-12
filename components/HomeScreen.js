@@ -29,7 +29,7 @@ export default function HomeScreen({ navigation }) {
                 <LoadingScreen />
             </View>
             <View style={styles.titleView}>
-                <Image source={require("../assets/logo.png")} style={{ width: screenWidth * 0.8, height: screenWidth * 0.8, zIndex: -1 }} />
+                <Image source={require("../assets/logo.png")} style={{ width: screenWidth * 0.8, height: screenWidth * 0.8, zIndex: 0 }} />
             </View>
             <View style={styles.buttonView}>
                 <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Pass and Play", { oneFirst: true, colorScheme: ["red", "yellow"] })}>
