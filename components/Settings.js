@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Switch } from 'react-native';
 import Slider from '@react-native-community/slider'
+import { useAudio } from "../context/AudioContext";
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
@@ -15,28 +16,28 @@ export default function Settings({ route, navigation }) {
     const { prevOneFirst } = route.params
     const { colors } = route.params
     const { currDifficulty } = route.params
-    // const { music } = route.params
+    const { backgroundAudio } = useAudio();
 
     /* Get the current settings from route.params, and update the state */
     useEffect(() => setOneFirst(prevOneFirst), [prevOneFirst])
     useEffect(() => setUseOriginalColors(colors[0] == "red" && colors[1] == "yellow"), [colors])
     useEffect(() => setSliderVal(currDifficulty), [currDifficulty])
 
-    // useEffect(() => {
-    //     music.getStatusAsync().then((ret) => {
-    //         setPlayBackgroundMusic(ret.isPlaying)
-    //     })
-    // }, [])
+    useEffect(() => {
+        backgroundAudio.current.getStatusAsync().then((ret) => {
+            setPlayBackgroundMusic(ret.isPlaying)
+        })
+    }, [])
 
-    // useEffect(() => {
-    //     music.getStatusAsync().then((ret) => {
-    //         if (!playBackgroundMusic) {
-    //             music.pauseAsync()
-    //         } else if (playBackgroundMusic) {
-    //             music.playAsync()
-    //         }
-    //     })
-    // }, [playBackgroundMusic])
+    useEffect(() => {
+        backgroundAudio.current.getStatusAsync().then((ret) => {
+            if (!playBackgroundMusic) {
+                backgroundAudio.current.pauseAsync()
+            } else if (playBackgroundMusic) {
+                backgroundAudio.current.playAsync()
+            }
+        })
+    }, [playBackgroundMusic])
 
     return (
         <View style={styles.container}>

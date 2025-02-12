@@ -54,7 +54,7 @@ export default function Tutorial(props) {
 
     useEffect(() => {
         setTutorialMessages(prevMessages => {
-            const updatedMessages = [...prevMessages];  // Create a new array (don't mutate the original)
+            const updatedMessages = [...prevMessages];
             updatedMessages[15] = "Good job! Now finish the move by " + (props.dropped ? "rotating." : "dropping a chip.");
             return updatedMessages;
         });
