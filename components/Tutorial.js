@@ -1,32 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
 
 const chipWidth = screenWidth * 0.11
-
-let tutorialText = [
-    "Welcome to the Rot4te tutorial!",
-    "This game is a new take on 4 In A Row.",
-    "The twist is that the board must rotate every turn.",
-    "Upon rotating, the chips fall according to the new orientation.",
-    "On your turn, you must drop a chip and rotate the board 90° clockwise or counter-clockwise.",
-    "You can do this in any order you like.",
-    "Here are the chips:",
-    "And here are the buttons to rotate:",
-    "The circle in the middle indicates whose turn it is.",
-    "The gray highlighting indicates what is available to you.",
-    "It is red's turn and they can rotate or drop.",
-    "You can drop a chip by dragging it above the desired column.",
-    "Or you can rotate by clicking the rotate buttons.",
-    "Let's practice by playing against the computer!",
-    "Press 'okay', then start a move by dropping a chip or rotating.",
-    "Good job! Now finish the move.",
-    "The bot replied with its move.",
-    "First to get 4-In-A-Row wins!",
-    "Click 'okay' to continue the game against the computer. Good luck!"
-]
 
 /* Coordinates to highlight parts of the game (top, left, width, height) */
 const tutorialBoxes = [
@@ -51,9 +29,35 @@ const tutorialBoxes = [
     [[-1, -1, 0, 0], [-1, -1, 0, 0]]
 ]
 
-export default function Tutorial(props, { navigation }) {
+export default function Tutorial(props) {
+    const [tutorialMessages, setTutorialMessages] = useState([
+        "Welcome to the Rot4te tutorial!",
+        "This game is a new take on 4 In A Row.",
+        "The twist is that the board must rotate every turn.",
+        "Upon rotating, the chips fall according to the new orientation.",
+        "On your turn, you must drop a chip and rotate the board 90° clockwise or counter-clockwise.",
+        "You can do this in any order you like.",
+        "Here are the chips:",
+        "And here are the buttons to rotate:",
+        "The circle in the middle indicates whose turn it is.",
+        "The gray highlighting indicates what is available to you.",
+        "It is red's turn and they can rotate or drop.",
+        "You can drop a chip by dragging it above the desired column.",
+        "Or you can rotate by clicking the rotate buttons.",
+        "Let's practice by playing against the computer!",
+        "Press 'okay', then start a move by dropping a chip or rotating.",
+        "Good job! Now finish the move.",
+        "The bot replied with its move.",
+        "First to get 4-In-A-Row wins!",
+        "Click 'okay' to continue the game against the computer. Good luck!"
+    ]);
+
     useEffect(() => {
-        tutorialText[15] = "Good job! Now finish the move by " + (props.dropped ? "rotating." : "dropping a chip.")
+        setTutorialMessages(prevMessages => {
+            const updatedMessages = [...prevMessages];
+            updatedMessages[15] = "Good job! Now finish the move by " + (props.dropped ? "rotating." : "dropping a chip.");
+            return updatedMessages;
+        });
     }, [props.dropped])
 
     /* 
@@ -84,7 +88,7 @@ export default function Tutorial(props, { navigation }) {
                 borderRadius: 10
             }} />
             <View>
-                <Text style={styles.instruction}>{tutorialText[props.index]}</Text>
+                <Text style={styles.instruction}>{tutorialMessages[props.index]}</Text>
             </View>
             <View style={styles.buttonView}>
                 {props.index > 0 && props.index < 15 ?
@@ -97,7 +101,7 @@ export default function Tutorial(props, { navigation }) {
                     </TouchableOpacity>
                     : null}
                 <TouchableOpacity style={styles.button} onPress={() => {
-                    if (props.index < tutorialText.length - 1) {
+                    if (props.index < tutorialMessages.length - 1) {
                         if (props.index != 14 && props.index != 15) {
                             props.setIndex(props.index + 1)
                         } else {

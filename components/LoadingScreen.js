@@ -26,7 +26,8 @@ export default function LoadingScreen() {
             xCoordinate, {
             toValue: dest,
             easing: Easing.linear,
-            duration: 1400
+            duration: 1400,
+            useNativeDriver: false, 
         }
         ).start(() => moveX(Math.abs(dest - (screenWidth - chipWidth))))
     }
@@ -41,7 +42,8 @@ export default function LoadingScreen() {
             yCoordinate, {
             toValue: dest,
             easing: dest == 0 ? (t) => Math.pow(t, 1 / 2) : (t) => Math.pow(t, 2),
-            duration: 500
+            duration: 500,
+            useNativeDriver: false, 
         }
         ).start(() => moveY(Math.abs(dest - (screenHeight / 4))))
     }

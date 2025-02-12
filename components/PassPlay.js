@@ -38,7 +38,7 @@ export default function PassPlay({ route, navigation }) {
     const [currCol, setCurrCol] = useState(-1)
     const [colors, setColors] = useState(["red", "yellow"])
     const [blocked, setBlocked] = useState(false)
-    const [boardZ, setBoardZ] = useState(-1)
+    const [boardZ, setBoardZ] = useState(2)
     const [oneGoesFirst, setOneGoesFirst] = useState(true)
     const [resetting, setResetting] = useState(true)
 
@@ -138,7 +138,8 @@ export default function PassPlay({ route, navigation }) {
             boardRotation, {
             toValue: boardRotation._value + angle,
             easing: Easing.bounce,
-            duration: 1000
+            duration: 1000,
+            useNativeDriver: false, 
         }
         ).start(() => {
             setRotated(true)
@@ -191,7 +192,7 @@ export default function PassPlay({ route, navigation }) {
         onStartShouldSetPanResponder: () => true,
         onPanResponderMove: (event, gestureState) => {
             if (turn && winner == null && dropped == false && !blocked) {
-                setBoardZ(-1)
+                setBoardZ(2)
                 positionValueOne.setValue({ x: gestureState.moveX - chipWidth / 2, y: gestureState.moveY - chipWidth / 2 })
                 if (parseFloat(JSON.stringify(positionValueOne.getLayout().top)) < screenHeight * 0.25) {
                     setCurrCol(getClosestColumn(positionValueOne.getLayout().left)[1])
@@ -207,7 +208,7 @@ export default function PassPlay({ route, navigation }) {
                 let colHeight = getHeight(board, col[1])
                 if (colHeight < 6 + (board[1] % 2) && newY < screenHeight * 0.25 && !blocked) {
                     setBlocked(true)
-                    setBoardZ(1)
+                    setBoardZ(4)
                     positionValueOne.setValue({ x: newX, y: newY })
                     setTimeout(() => makeClink(), 300)
                     if (board[1] % 2 === 0) {
@@ -215,7 +216,8 @@ export default function PassPlay({ route, navigation }) {
                             positionValueOne, {
                             toValue: { x: newX, y: screenHeight * 0.3 + screenWidth * 0.7 - (1.05 * chipWidth) * (1 + colHeight) },
                             easing: Easing.bounce,
-                            duration: 1000
+                            duration: 1000,
+                            useNativeDriver: false, 
                         }
                         ).start(() => {
                             setDropped(true)
@@ -228,7 +230,8 @@ export default function PassPlay({ route, navigation }) {
                             positionValueOne, {
                             toValue: { x: newX, y: (screenHeight * 0.3 + screenWidth * 0.82) - (1.19 * chipWidth) * (1 + colHeight) },
                             easing: Easing.bounce,
-                            duration: 1000
+                            duration: 1000,
+                            useNativeDriver: false, 
                         }
                         ).start(() => {
                             setDropped(true)
@@ -242,7 +245,8 @@ export default function PassPlay({ route, navigation }) {
                         positionValueOne, {
                         toValue: { x: screenWidth / 5 - chipWidth / 2, y: screenHeight * 0.9 - chipWidth / 2 },
                         easing: Easing.ease,
-                        duration: 200
+                        duration: 200,
+                        useNativeDriver: false, 
                     }
                     ).start()
                 }
@@ -263,7 +267,7 @@ export default function PassPlay({ route, navigation }) {
         onStartShouldSetPanResponder: () => true,
         onPanResponderMove: (event, gestureState) => {
             if (!turn && winner == null && dropped === false && !blocked) {
-                setBoardZ(-1)
+                setBoardZ(2)
                 positionValueTwo.setValue({ x: gestureState.moveX - chipWidth / 2, y: gestureState.moveY - chipWidth / 2 })
                 if (parseFloat(JSON.stringify(positionValueTwo.getLayout().top)) < screenHeight * 0.25) {
                     setCurrCol(getClosestColumn(positionValueTwo.getLayout().left)[1])
@@ -279,7 +283,7 @@ export default function PassPlay({ route, navigation }) {
                 let colHeight = getHeight(board, col[1])
                 if (colHeight < 6 + (board[1] % 2) && newY < screenHeight * 0.25) {
                     setBlocked(true)
-                    setBoardZ(1)
+                    setBoardZ(4)
                     positionValueTwo.setValue({ x: newX, y: newY })
                     setTimeout(() => makeClink(), 300)
                     if (board[1] % 2 === 0) {
@@ -287,7 +291,8 @@ export default function PassPlay({ route, navigation }) {
                             positionValueTwo, {
                             toValue: { x: newX, y: screenHeight * 0.3 + screenWidth * 0.7 - (1.05 * chipWidth) * (1 + colHeight) },
                             easing: Easing.bounce,
-                            duration: 1000
+                            duration: 1000,
+                            useNativeDriver: false, 
                         }
                         ).start(() => {
                             setDropped(true)
@@ -300,7 +305,8 @@ export default function PassPlay({ route, navigation }) {
                             positionValueTwo, {
                             toValue: { x: newX, y: (screenHeight * 0.3 + screenWidth * 0.82) - (1.19 * chipWidth) * (1 + colHeight) },
                             easing: Easing.bounce,
-                            duration: 1000
+                            duration: 1000,
+                            useNativeDriver: false, 
                         }
                         ).start(() => {
                             setDropped(true)
@@ -314,7 +320,8 @@ export default function PassPlay({ route, navigation }) {
                         positionValueTwo, {
                         toValue: { x: screenWidth * 0.8 - chipWidth / 2, y: screenHeight * 0.9 - chipWidth / 2 },
                         easing: Easing.ease,
-                        duration: 200
+                        duration: 200,
+                        useNativeDriver: false, 
                     }
                     ).start()
                 }
@@ -325,7 +332,7 @@ export default function PassPlay({ route, navigation }) {
     return (
         <View style={styles.container}>
             {resetting ?
-                <View style={{ width: "100%", height: "100%", zIndex: 3, backgroundColor: "white" }}>
+                <View style={{ width: "100%", height: "100%", zIndex: 6, backgroundColor: "white" }}>
                     <View style={{ position: "absolute", left: 0, top: screenHeight * 3 / 8 }}>
                         <LoadingScreen style={{ top: screenHeight * 0.5 }} />
                     </View>
@@ -339,7 +346,7 @@ export default function PassPlay({ route, navigation }) {
                     <Text style={{ color: "white", fontSize: 20, fontFamily: 'sans-serif-light', padding: 5 }}>Reset Game</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => {
-                    navigation.navigate("Settings", { cameFrom: "Pass and Play", prevOneFirst: oneGoesFirst, colors: colors, music: music })
+                    navigation.navigate("Settings", { cameFrom: "Pass and Play", prevOneFirst: oneGoesFirst, colors: colors })
                 }}>
                     <Icon
                         name="settings"
@@ -352,10 +359,10 @@ export default function PassPlay({ route, navigation }) {
             <Animated.View style={{ ...styles.imageStyle, transform: [{ rotate: spin }], zIndex: boardZ }}>
                 <Image source={require("../assets/board.png")} style={{ width: "100%", height: "100%" }} />
             </Animated.View>
-            <Animated.View style={{ ...styles.imageStyle, transform: [{ rotate: spin }], zIndex: -2 }}>
+            <Animated.View style={{ ...styles.imageStyle, transform: [{ rotate: spin }], zIndex: 1 }}>
                 <RotateDropAnimation data={board} size={chipWidth} colors={colors} drop={dropped} clink={makeClink} />
             </Animated.View>
-            <Animated.View style={{ ...styles.imageStyle, transform: [{ rotate: spin }], zIndex: -3 }}>
+            <Animated.View style={{ ...styles.imageStyle, transform: [{ rotate: spin }], zIndex: 0 }}>
                 <ColumnIndicator column={currCol} orientation={board[1]} />
             </Animated.View>
             <View style={{ ...styles.rotateButtons, backgroundColor: rotated ? "transparent" : "#ccc" }}>

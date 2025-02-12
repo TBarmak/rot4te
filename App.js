@@ -7,23 +7,26 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
 import Tutorial from './components/Tutorial';
 import PlayBot from './components/PlayBot';
+import { AudioProvider } from './context/AudioContext.js';
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false
-        }}>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Settings" component={Settings} />
-        <Stack.Screen name="Pass and Play" component={PassPlay} />
-        <Stack.Screen name="Tutorial" component={Tutorial} />
-        <Stack.Screen name="Play Bot" component={PlayBot} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <AudioProvider>
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false
+          }}>
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Settings" component={Settings} />
+          <Stack.Screen name="Pass and Play" component={PassPlay} />
+          <Stack.Screen name="Tutorial" component={Tutorial} />
+          <Stack.Screen name="Play Bot" component={PlayBot} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </AudioProvider>
   );
 }
 

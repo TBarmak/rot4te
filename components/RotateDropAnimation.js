@@ -54,7 +54,8 @@ export default function RotateDropAnimation(props) {
                             coor[r][c], {
                             toValue: { x: (0.02 * props.size) + (1.193 * props.size) * c, y: (0.04 * props.size) + (1.06 * props.size) * (board[0].length - (count + 1)) },
                             easing: Easing.bounce,
-                            duration: 500
+                            duration: 500,
+                            useNativeDriver: false,
                         }
                         ).start()
                         count += 1
@@ -74,7 +75,8 @@ export default function RotateDropAnimation(props) {
                             coor[r][c], {
                             toValue: { x: (0.02 * props.size) + (1.193 * props.size) * (board[0][0].length - (count + 1)), y: (0.04 * props.size) + (1.06 * props.size) * r },
                             easing: Easing.bounce,
-                            duration: 500
+                            duration: 500,
+                            useNativeDriver: false,
                         }
                         ).start()
                         count += 1
@@ -94,7 +96,8 @@ export default function RotateDropAnimation(props) {
                             coor[r][c], {
                             toValue: { x: (0.02 * props.size) + (1.193 * props.size) * c, y: (0.04 * props.size) + (1.06 * props.size) * count },
                             easing: Easing.bounce,
-                            duration: 500
+                            duration: 500,
+                            useNativeDriver: false,
                         }
                         ).start()
                         count += 1
@@ -114,7 +117,8 @@ export default function RotateDropAnimation(props) {
                             coor[r][c], {
                             toValue: { x: (0.02 * props.size) + (1.193 * props.size) * count, y: (0.04 * props.size) + (1.06 * props.size) * r },
                             easing: Easing.bounce,
-                            duration: 500
+                            duration: 500,
+                            useNativeDriver: false,
                         }
                         ).start()
                         count += 1
@@ -133,23 +137,25 @@ export default function RotateDropAnimation(props) {
 
     return (
         <View style={styles.container}>
-            {board[0].map((row, r) => {
-                return row.map((item, c) => {
-                    return (
-                        <Animated.View style={{
+            {board[0].map((row, r) =>
+                row.map((item, c) => (
+                    <Animated.View
+                        key={`${r}-${c}`} 
+                        style={{
                             position: "absolute",
                             width: props.size * 0.997,
                             height: props.size * 0.997,
                             borderRadius: props.size / 2,
-                            backgroundColor: item == '' ? "transparent" : props.colors[parseInt(item.slice(0, -1))],
+                            backgroundColor:
+                                item == "" ? "transparent" : props.colors[parseInt(item.slice(0, -1))],
                             zIndex: 1,
-                            borderWidth: item.slice(-1) === 'w' ? 6 : 0,
+                            borderWidth: item.slice(-1) === "w" ? 6 : 0,
                             borderColor: item.slice(-1) === "w" ? "#0f0" : "transparent",
-                            ...coor[r][c].getLayout()
-                        }} />
-                    )
-                })
-            })}
+                            ...coor[r][c].getLayout(),
+                        }}
+                    />
+                ))
+            )}
         </View>
     )
 }

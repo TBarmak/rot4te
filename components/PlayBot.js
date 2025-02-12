@@ -43,11 +43,11 @@ export default function PlayBot({ route, navigation }) {
     const [colors, setColors] = useState(["red", "yellow"])
     const [oneGoesFirst, setOneGoesFirst] = useState(true)
     const [blocked, setBlocked] = useState(false)
-    const [boardZ, setBoardZ] = useState(-1)
+    const [boardZ, setBoardZ] = useState(3)
     const [resetting, setResetting] = useState(true)
     const [showTutorial, setShowTutorial] = useState(false)
     const [tutorialIndex, setTutorialIndex] = useState(0)
-    const [tutorialZIndex, setTutorialZIndex] = useState(2)
+    const [tutorialZIndex, setTutorialZIndex] = useState(6)
 
     const { oneFirst } = route.params
     const { colorScheme } = route.params
@@ -132,7 +132,7 @@ export default function PlayBot({ route, navigation }) {
     */
     useEffect(() => {
         if (!turn && !resetting) {
-            setBoardZ(-1)
+            setBoardZ(3)
             setTimeout(() => getBotMove(), 2000)
         }
     }, [turn, resetting])
@@ -200,19 +200,20 @@ export default function PlayBot({ route, navigation }) {
         if (turn && dropped && showTutorial) {
             setTimeout(() => {
                 setTutorialIndex(tutorialIndex + 1)
-                setTutorialZIndex(2)
+                setTutorialZIndex(6)
             }, 7500)
         } else if (turn && showTutorial) {
             setTimeout(() => {
                 setTutorialIndex(tutorialIndex + 1)
-                setTutorialZIndex(2)
+                setTutorialZIndex(6)
             }, 1000)
         }
         Animated.timing(
             boardRotation, {
             toValue: boardRotation._value + angle,
             easing: Easing.bounce,
-            duration: 1000
+            duration: 1000,
+            useNativeDriver: false, 
         }
         ).start(() => {
             setRotated(true)
@@ -384,17 +385,19 @@ export default function PlayBot({ route, navigation }) {
             positionValueTwo, {
             toValue: { x: newX, y: screenHeight * 0.15 },
             easing: Easing.ease,
-            duration: 1000
+            duration: 1000,
+            useNativeDriver: false, 
         }
         ).start(() => {
-            setBoardZ(1)
+            setBoardZ(5)
             setTimeout(() => makeClink(), 300)
             if (board[1] % 2 === 0) {
                 Animated.timing(
                     positionValueTwo, {
                     toValue: { x: newX, y: screenHeight * 0.3 + screenWidth * 0.7 - (1.05 * chipWidth) * (1 + getHeight(board, botMove[0])) },
                     easing: Easing.bounce,
-                    duration: 1000
+                    duration: 1000,
+                    useNativeDriver: false, 
                 }
                 ).start(() => {
                     setBoard(dropChip(board, botMove[0], "1"))
@@ -406,7 +409,8 @@ export default function PlayBot({ route, navigation }) {
                     positionValueTwo, {
                     toValue: { x: newX, y: (screenHeight * 0.3 + screenWidth * 0.82) - (1.19 * chipWidth) * (1 + getHeight(board, botMove[0])) },
                     easing: Easing.bounce,
-                    duration: 1000
+                    duration: 1000,
+                    useNativeDriver: false, 
                 }
                 ).start(() => {
                     setBoard(dropChip(board, botMove[0], "1"))
@@ -436,7 +440,7 @@ export default function PlayBot({ route, navigation }) {
         onStartShouldSetPanResponder: () => true,
         onPanResponderMove: (event, gestureState) => {
             if (turn && winner == null && dropped == false && !blocked) {
-                setBoardZ(-1)
+                setBoardZ(3)
                 positionValueOne.setValue({ x: gestureState.moveX - chipWidth / 2, y: gestureState.moveY - chipWidth / 2 })
                 if (parseFloat(JSON.stringify(positionValueOne.getLayout().top)) < screenHeight * 0.25) {
                     setCurrCol(getClosestColumn(positionValueOne.getLayout().left)[1])
@@ -454,13 +458,13 @@ export default function PlayBot({ route, navigation }) {
                     if (showTutorial) {
                         setTutorialIndex(tutorialIndex + 1)
                         if (showTutorial && rotated) {
-                            setTimeout(() => setTutorialZIndex(2), 7500)
+                            setTimeout(() => setTutorialZIndex(6), 7500)
                         } else {
-                            setTimeout(() => setTutorialZIndex(2), 1000)
+                            setTimeout(() => setTutorialZIndex(6), 1000)
                         }
                     }
                     setBlocked(true)
-                    setBoardZ(1)
+                    setBoardZ(5)
                     positionValueOne.setValue({ x: newX, y: newY })
                     setTimeout(() => makeClink(), 300)
                     if (board[1] % 2 === 0) {
@@ -468,7 +472,8 @@ export default function PlayBot({ route, navigation }) {
                             positionValueOne, {
                             toValue: { x: newX, y: screenHeight * 0.3 + screenWidth * 0.7 - (1.05 * chipWidth) * (1 + colHeight) },
                             easing: Easing.bounce,
-                            duration: 1000
+                            duration: 1000,
+                            useNativeDriver: false, 
                         }
                         ).start(() => {
                             setDropped(true)
@@ -481,7 +486,8 @@ export default function PlayBot({ route, navigation }) {
                             positionValueOne, {
                             toValue: { x: newX, y: (screenHeight * 0.3 + screenWidth * 0.82) - (1.19 * chipWidth) * (1 + colHeight) },
                             easing: Easing.bounce,
-                            duration: 1000
+                            duration: 1000,
+                            useNativeDriver: false, 
                         }
                         ).start(() => {
                             setDropped(true)
@@ -492,13 +498,14 @@ export default function PlayBot({ route, navigation }) {
                     }
                 } else {
                     if (showTutorial) {
-                        setTutorialZIndex(2)
+                        setTutorialZIndex(6)
                     }
                     Animated.timing(
                         positionValueOne, {
                         toValue: { x: screenWidth / 5 - chipWidth / 2, y: screenHeight * 0.9 - chipWidth / 2 },
                         easing: Easing.ease,
-                        duration: 200
+                        duration: 200,
+                        useNativeDriver: false, 
                     }
                     ).start()
                 }
@@ -510,7 +517,7 @@ export default function PlayBot({ route, navigation }) {
     return (
         <View style={styles.container}>
             {resetting ?
-                <View style={{ width: "100%", height: "100%", zIndex: 3, backgroundColor: "white" }}>
+                <View style={{ width: "100%", height: "100%", zIndex: 7, backgroundColor: "white" }}>
                     <View style={{ position: "absolute", left: 0, top: screenHeight * 3 / 8 }}>
                         <LoadingScreen style={{ top: screenHeight * 0.5 }} />
                     </View>
@@ -524,14 +531,14 @@ export default function PlayBot({ route, navigation }) {
                     <Tutorial index={tutorialIndex} setShowTutorial={setShowTutorial} setIndex={setTutorialIndex} setZ={setTutorialZIndex} dropped={dropped} />
                 </View> : null
             }
-            <View style={{ zIndex: -4, position: "absolute", width: "100%", height: "100%", backgroundColor: "#fff" }} />
+            <View style={{ zIndex: 0, position: "absolute", width: "100%", height: "100%", backgroundColor: "#fff" }} />
             {!showTutorial ?
                 <View style={styles.header}>
                     <TouchableOpacity style={styles.reset} onPress={() => resetGame()}>
                         <Text style={{ color: "white", fontSize: 20, fontFamily: 'sans-serif-light', padding: 5 }}>Reset Game</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
-                        navigation.navigate("Settings", { cameFrom: "Play Bot", prevOneFirst: oneGoesFirst, colors: colors, currDifficulty: botDepth, music: music })
+                        navigation.navigate("Settings", { cameFrom: "Play Bot", prevOneFirst: oneGoesFirst, colors: colors, currDifficulty: botDepth })
                     }}>
                         <Icon
                             name="settings"
@@ -545,10 +552,10 @@ export default function PlayBot({ route, navigation }) {
             <Animated.View style={{ ...styles.imageStyle, transform: [{ rotate: spin }], zIndex: boardZ }}>
                 <Image source={require("../assets/board.png")} style={{ width: "100%", height: "100%" }} />
             </Animated.View>
-            <Animated.View style={{ ...styles.imageStyle, transform: [{ rotate: spin }], zIndex: -2 }}>
+            <Animated.View style={{ ...styles.imageStyle, transform: [{ rotate: spin }], zIndex: 2 }}>
                 <RotateDropAnimation data={board} size={chipWidth} colors={colors} drop={dropped} clink={makeClink} />
             </Animated.View>
-            <Animated.View style={{ ...styles.imageStyle, transform: [{ rotate: spin }], zIndex: -3 }}>
+            <Animated.View style={{ ...styles.imageStyle, transform: [{ rotate: spin }], zIndex: 1 }}>
                 <ColumnIndicator column={currCol} orientation={board[1]} />
             </Animated.View>
             <View style={{ ...styles.rotateButtons, backgroundColor: rotated ? "transparent" : "#ccc" }}>
